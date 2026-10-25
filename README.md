@@ -2,6 +2,35 @@
 
 Base de conhecimento para preparação em provas da FGV, com foco em concursos de Tecnologia da Informação.
 
+## Simulador interativo
+
+O repositório possui um simulador web em [`site/index.html`](site/index.html), preparado para GitHub Pages.
+
+URL planejada após ativar o Pages:
+
+`https://admsouza.github.io/exames-fgv/`
+
+O simulador permite:
+
+- visualizar o PDF oficial da FGV ao lado do cartão-resposta;
+- marcar alternativas A–E;
+- informar confiança baixa, média ou alta por questão;
+- cronometrar a tentativa;
+- salvar o progresso no navegador;
+- corrigir pelo gabarito oficial definitivo;
+- calcular aproveitamento desconsiderando questões anuladas;
+- exportar o resultado em JSONL para alimentar `desempenho/questoes.jsonl`.
+
+## Provas inicialmente catalogadas
+
+O arquivo [`provas/catalogo.json`](provas/catalogo.json) contém as fontes oficiais e gabaritos utilizados pelo simulador.
+
+1. TJRJ 2026 — Analista Judiciário — TI — Analista de Sistemas — Tipo 2;
+2. DATAPREV 2024 — Analista de TI — Desenvolvimento de Software — Tipo 3;
+3. MPRJ 2025 — Analista do Ministério Público — Área Administrativa — TI — Tipo 1.
+
+Novas provas devem ser incluídas preferencialmente a partir dos cadernos e gabaritos definitivos publicados pela própria FGV.
+
 ## Objetivo
 
 Transformar cada questão resolvida em dado útil para responder três perguntas:
@@ -17,18 +46,23 @@ O repositório não deve ser apenas um arquivo de provas. Ele registra desempenh
 ```text
 exames-fgv/
 ├── README.md
-├── provas/                  # cadernos, gabaritos e metadados das provas estudadas
+├── provas/
+│   └── catalogo.json
+├── site/
+│   └── index.html
 ├── desempenho/
-│   ├── questoes.jsonl       # histórico individual das questões
-│   ├── questoes.schema.json # contrato dos registros
-│   ├── simulados.jsonl      # resultados de simulados completos
-│   └── discursivas.jsonl    # histórico e notas de discursivas
+│   ├── questoes.jsonl
+│   ├── questoes.schema.json
+│   ├── simulados.jsonl
+│   └── discursivas.jsonl
 ├── estudos/
 │   ├── caderno-de-erros.md
 │   └── pontos-fracos.md
-└── docs/
-    ├── metodologia.md
-    └── taxonomia-assuntos.md
+├── docs/
+│   ├── metodologia.md
+│   └── taxonomia-assuntos.md
+└── .github/workflows/
+    └── pages.yml
 ```
 
 ## Registro de uma questão
@@ -69,7 +103,7 @@ Veja os detalhes em [`docs/metodologia.md`](docs/metodologia.md).
 
 ## Como definir o próximo estudo
 
-A prioridade não será baseada apenas no edital. Deve cruzar:
+A prioridade deve cruzar:
 
 - incidência do assunto em provas FGV relevantes;
 - peso no edital atual;
