@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Prova {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  titulo    String
+  orgao     String
+  ano       Int
+  cargo     String
+  banca     String   @default("FGV")
+  pdfUrl    String?
+  criadaEm  DateTime @default(now())
+  questoes  Questao[]
+  sessoes   SessaoProva[]
+}
+
+model Questao {
+  id          String   @id @default(cuid())
+  provaId     String
+  numero      Int
+  disciplina  String?
+  assunto     String?
+  subassunto  String?
+  enunciado   String?
+  anulada     Boolean  @default(false)
+  gabarito    String?
+  prova       Prova    @relation(fields: [provaId], references: [id], onDelete: Cascade)
+  alternativas Alternativa[]
+  respostas   RespostaUsuario[]
+
+  @@unique([provaId, numero])
+  @@index([disciplina, assunto, subassunto])
+}
+
+model Alternativa {
+  id        String  @id @default(cuid())
+  questaoId String
+  letra     String
+  texto     String
+  questao   Questao @relation(fields: [questaoId], references: [id], onDelete: Cascade)
+
+  @@unique([questaoId, letra])
+}
+
+model Usuario {
+  id        String   @id @default(cuid())
+  nome      String
+  email     String?  @unique
+  criadoEm  DateTime @default(now())
+  sessoes   SessaoProva[]
+}
+
+model SessaoProva {
+  id          String   @id @default(cuid())
+  provaId     String
+  usuarioId   String?
+  iniciadaEm  DateTime @default(now())
+  finalizadaEm DateTime?
+  prova       Prova    @relation(fields: [provaId], references: [id])
+  usuario     Usuario? @relation(fields: [usuarioId], references: [id])
+  respostas   RespostaUsuario[]
+}
+
+model RespostaUsuario {
+  id              String   @id @default(cuid())
+  sessaoId         String
+  questaoId        String
+  resposta         String?
+  acertou          Boolean?
+  confianca        String?
+  tempoSegundos    Int?
+  tipoErro         String?
+  alternativasDuvida String[] @default([])
+  observacao       String?
+  respondidaEm     DateTime @default(now())
+  sessao           SessaoProva @relation(fields: [sessaoId], references: [id], onDelete: Cascade)
+  questao          Questao @relation(fields: [questaoId], references: [id])
+
+  @@unique([sessaoId, questaoId])
+  @@index([acertou, confianca, tipoErro])
+}
+
+model Revisao {
+  id          String   @id @default(cuid())
+  questaoId   String
+  usuarioId   String?
+  agendadaPara DateTime
+  concluidaEm DateTime?
+  motivo      String?
+  criadoEm    DateTime @default(now())
+}
