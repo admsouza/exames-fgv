@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Registro de Questão FGV",
+  "type": "object",
+  "required": [
+    "id",
+    "data",
+    "prova",
+    "cargo",
+    "questao",
+    "disciplina",
+    "assunto",
+    "resposta_usuario",
+    "gabarito",
+    "resultado",
+    "confianca"
+  ],
+  "properties": {
+    "id": { "type": "string" },
+    "data": { "type": "string", "format": "date" },
+    "prova": { "type": "string" },
+    "orgao": { "type": "string" },
+    "ano": { "type": "integer" },
+    "cargo": { "type": "string" },
+    "questao": { "type": "integer", "minimum": 1 },
+    "disciplina": { "type": "string" },
+    "assunto": { "type": "string" },
+    "subassunto": { "type": ["string", "null"] },
+    "resposta_usuario": { "type": "string" },
+    "gabarito": { "type": "string" },
+    "resultado": { "enum": ["acerto", "erro", "anulada"] },
+    "confianca": { "enum": ["alta", "media", "baixa"] },
+    "tempo_segundos": { "type": ["integer", "null"], "minimum": 0 },
+    "tipo_erro": {
+      "type": ["string", "null"],
+      "enum": ["conteudo", "interpretacao", "distrator", "atencao", null]
+    },
+    "alternativas_duvida": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "justificativa_correta": { "type": ["string", "null"] },
+    "motivo_erro": { "type": ["string", "null"] },
+    "observacao": { "type": ["string", "null"] },
+    "revisar": { "type": "boolean", "default": false },
+    "revisao_em": { "type": ["string", "null"], "format": "date" },
+    "fonte": { "type": ["string", "null"] }
+  },
+  "additionalProperties": false
+}
